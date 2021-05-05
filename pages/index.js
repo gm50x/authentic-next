@@ -2,7 +2,10 @@ import Head from 'next/head'
 import Image from 'next/image'
 import styles from '../styles/Home.module.css'
 
+import { useSession, signIn, signOut } from 'next-auth/client'
+
 export default function Home() {
+  const [session, loading] = useSession()
   return (
     <div className={styles.container}>
       <Head>
@@ -21,7 +24,28 @@ export default function Home() {
           <code className={styles.code}>pages/index.js</code>
         </p>
 
-        <div className={styles.grid}>
+        {!session && (
+          <>
+            Not signed in <br />
+            <button onClick={() => signIn()}>Sign in</button>
+          </>
+        )}
+
+        {!session && (
+          <>
+            Not signed in <br />
+            <button onClick={() => signIn('azure-ad-b2c')}>Direct Sign in</button>
+          </>
+        )}
+
+        {session && (
+          <>
+            Signed in as {session.user?.email} {session.user?.name} {session.user?.image} <br />
+            <button onClick={() => signOut()}>Sign out!</button>
+          </>
+        )}
+
+        {session && <div className={styles.grid}>
           <a href="https://nextjs.org/docs" className={styles.card}>
             <h2>Documentation &rarr;</h2>
             <p>Find in-depth information about Next.js features and API.</p>
@@ -49,7 +73,7 @@ export default function Home() {
               Instantly deploy your Next.js site to a public URL with Vercel.
             </p>
           </a>
-        </div>
+        </div>}
       </main>
 
       <footer className={styles.footer}>
