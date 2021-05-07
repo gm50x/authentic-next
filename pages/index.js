@@ -24,6 +24,8 @@ export default function Home() {
           <code className={styles.code}>pages/index.js</code>
         </p>
 
+        Authentic
+
         {!session && (
           <>
             Not signed in <br />
